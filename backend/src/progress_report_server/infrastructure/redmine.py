@@ -85,4 +85,6 @@ class RedmineParser(AbstractIssueParser):
             url=issue.url,
             number=issue.id,
             service_name="Redmine",
+            created_at=issue.created_on,
+            updated_at=issue.updated_on,
         )

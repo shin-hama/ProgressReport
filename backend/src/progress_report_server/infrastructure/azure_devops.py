@@ -42,4 +42,6 @@ class AzureClient(AbstractIssueParser):
             url=work_item.url,
             number=work_item.id,
             service_name="Azure DevOps",
+            created_at=work_item.fields["System.CreatedDate"],
+            updated_at=work_item.fields["System.ChangedDate"],
         )
