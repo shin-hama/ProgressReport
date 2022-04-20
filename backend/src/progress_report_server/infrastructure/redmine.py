@@ -34,7 +34,7 @@ class RedmineParser(AbstractIssueParser):
         )
 
     async def get_tickets(
-        self,
+        self, start: Optional[date] = None, end: Optional[date] = None
     ) -> list[Ticket]:
         """Get the issues that were updated in the specified period for current session user.
 
@@ -52,7 +52,7 @@ class RedmineParser(AbstractIssueParser):
         """
         filter = {}
 
-        updated_on = self._build_date_range()
+        updated_on = self._build_date_range(start, end)
         # updated_on will be not set when timestamp condition is empty
         if updated_on:
             filter["updated_on"] = updated_on

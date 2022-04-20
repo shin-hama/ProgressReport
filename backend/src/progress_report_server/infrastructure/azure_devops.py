@@ -1,3 +1,6 @@
+from datetime import date
+from typing import Optional
+
 from azure.devops.connection import Connection
 from azure.devops.v6_0.work_item_tracking import (
     WorkItemTrackingClient,
@@ -5,7 +8,6 @@ from azure.devops.v6_0.work_item_tracking import (
     WorkItemQueryResult,
 )
 from azure.devops.v6_0.work_item_tracking.models import WorkItem
-
 from msrest.authentication import BasicAuthentication
 
 from progress_report_server.core.config import env_config
@@ -23,16 +25,31 @@ class AzureClient(AbstractIssueParser):
 
         self.client: WorkItemTrackingClient = client
 
-    async def get_tickets(self) -> list[Ticket]:
-        result = self._get_all_issues()
+    async def get_tickets(
+        self, start: Optional[date] = None, end: Optional[date] = None
+    ) -> list[Ticket]:
+        result = self._get_all_issues(start, end)
         return [
             self._build_ticket(self.client.get_work_item(wi.id))
             for wi in result.work_items
         ]
 
-    def _get_all_issues(self) -> WorkItemQueryResult:
+    def _get_all_issues(
+        self, start: Optional[date] = None, end: Optional[date] = None
+    ) -> WorkItemQueryResult:
         # Get all work items where a type is issue
-        query = "Select * From WorkItems Where [System.AssignedTo] = 'shamada'"
+        query = """
+        Select *
+        From WorkItems
+        Where
+            [System.AssignedTo] = 'shamada'
+        """
+
+        if start:
+            query += "AND [System.ChangedDate] >= '{start}'".format(start=start)
+        if end:
+            query += "AND [System.ChangedDate] <= '{end}'".format(end=end)
+
         wiql = Wiql(query)
         return self.client.query_by_wiql(wiql)
 

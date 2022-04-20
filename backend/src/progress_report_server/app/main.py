@@ -1,5 +1,6 @@
 import asyncio
-from typing import Any
+from typing import Any, Optional
+from datetime import date
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -30,10 +31,12 @@ async def root() -> Any:
 
 @app.get("/tickets", response_model=Tickets)
 async def get_tickets(
+    start: Optional[date] = None,
+    end: Optional[date] = None,
     clients: list[AbstractIssueParser] = Depends(get_clients),
 ) -> Any:
     tickets = []
-    for result in await asyncio.gather(*[c.get_tickets() for c in clients]):
+    for result in await asyncio.gather(*[c.get_tickets(start, end) for c in clients]):
         tickets.extend(result)
 
     return Tickets(tickets=tickets)
