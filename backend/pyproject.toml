@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "progress_report_server"
+version = "0.1.0"
+description = ""
+authors = ["shin-hama <htysivista@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.75.1"
+uvicorn = {extras = ["standard"], version = "^0.17.6"}
+python-redmine = "^2.3.0"
+azure-devops = "^6.0.0-beta.4"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.1"
+mypy = "^0.942"
+flake8 = "^4.0.1"
+black = "^22.3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
