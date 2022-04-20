@@ -15,10 +15,13 @@ const TicketsTable: React.FC<Props> = ({ range }) => {
   const [tickets, setTickets] = React.useState([])
 
   React.useEffect(() => {
-    list().then((result) => {
+    if (!range) {
+      return
+    }
+    list(range).then((result) => {
       setTickets(result.data.tickets)
     })
-  }, [list])
+  }, [list, range])
 
   return (
     <Card>

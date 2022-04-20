@@ -5,6 +5,7 @@ export const useAxios = () => {
   const actions = React.useMemo(() => {
     const a = {
       fetch: async (url: string, config?: AxiosRequestConfig) => {
+        console.log(config)
         return await axios.get(url, config)
       },
     }
