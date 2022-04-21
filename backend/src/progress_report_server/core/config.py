@@ -14,6 +14,8 @@ class EnvConfig(BaseSettings):
     azure_organization: str
     proxy: Optional[str]
 
+    app_port: int
+
     class Config:
         env_file = DOTENV_FILE
         env_file_encoding = "utf-8"
