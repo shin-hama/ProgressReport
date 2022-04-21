@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    restart: on-failure
+    container_name: 'progress_report'
+    env_file:
+      - ./frontend/.env
+    environment:
+      - PORT=$PORT
+      - APP_PORT=$APP_PORT
+    ports:
+      - '$PORT:$PORT'
+    tty: true
+  app:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    restart: on-failure
+    container_name: 'progress_report_server'
+    env_file:
+      - ./backend/.env
+    environment:
+      - APP_PORT=$APP_PORT
+      - WEB_PORT=$PORT
+    ports:
+      - '$APP_PORT:$APP_PORT'
+    tty: true

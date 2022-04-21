@@ -5,13 +5,14 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
 from progress_report_server.app.models.tickets import Tickets
+from progress_report_server.core.config import env_config
 from progress_report_server.infrastructure import get_clients
 from progress_report_server.service.issue_parser import AbstractIssueParser
 
 
 app = FastAPI()
 
-origins = ["http://localhost:3000"]
+origins = ["http://localhost:{port}".format(port=env_config.web_port)]
 
 app.add_middleware(
     CORSMiddleware,

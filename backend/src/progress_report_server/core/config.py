@@ -15,6 +15,7 @@ class EnvConfig(BaseSettings):
     proxy: Optional[str]
 
     app_port: int
+    web_port: int
 
     class Config:
         env_file = DOTENV_FILE
